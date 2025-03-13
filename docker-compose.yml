@@ -1,0 +1,63 @@
+services:
+  jupyter:
+    image: jupyter/datascience-notebook:latest
+    container_name: jupyter
+    ports:
+      - 8888:8888
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+      JUPYTER_TOKEN: "jellybyte"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    networks:
+      - ollama_network
+    command: >
+      bash -c "pip install -r /home/jovyan/work/requirements.txt && start-notebook.sh"
+
+  open-webui:
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_SECRET_KEY=jellybyte
+    container_name: open-webui
+    restart: always
+    image: ghcr.io/open-webui/open-webui:main
+    depends_on:
+      - ollama
+    ports:
+      - 3000:8080
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - ollama_network
+
+  ollama:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - 11434:11434
+    container_name: ollama
+    image: ollama/ollama
+    tty: true
+    restart: unless-stopped
+    networks:
+      - ollama_network
+
+networks:
+  ollama_network:
+    driver: bridge
+
+volumes:
+  open-webui:
+    name: open-webui
+  ollama:
+    name: ollama
