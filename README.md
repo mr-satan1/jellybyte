@@ -40,8 +40,8 @@ Note - this is all a local LLM stack using JupyterLabs, Ollama and OpenWebUI.
 Start by cloning this repository (or downloading it) to your local machine.
 
 ```bash
-git clone <repository-url>
-cd <repository-folder>
+git clone https://github.com/mr-satan1/jellybyte
+cd jellybyte
 ```
 
 ### Step 2: Build the Docker Containers
