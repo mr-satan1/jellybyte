@@ -1,6 +1,6 @@
 # Jellybyte - LLM-Powered Threat Intelligence Research Lab
 
-Jellybyte is a ready-to-use platform that simplifies threat intelligence research using Large Language Models (LLMs). With pre-configured containers for JupyterLab and Open-WebUI, you can quickly dive into analysis without complex setup. 
+Jellybyte is a ready-to-use platform that simplifies threat intelligence research using Large Language Models (LLMs). With pre-configured containers for JupyterLab and Open-WebUI, you can quickly dive into analysis without complex setup. Compatible with Apple Silicon or Nvidia GPU's!
 
 It includes a suite of popular Python libraries for threat analysis enabling immediate use for threat research, malware analysis, and incident response.
 
@@ -32,6 +32,7 @@ Note - this is all a local LLM stack using JupyterLabs, Ollama and OpenWebUI.
 
 - Ensure you have [Docker](https://www.docker.com/get-started) and [Docker Compose](https://docs.docker.com/compose/install/) installed on your local machine.
 - Ensure you have an internet connection to download the models.
+- [Apple Silicon Users] - Make sure you have [Ollama](https://www.ollama.com) installed and running on the default host/port.
 
 ## Steps to Get Started
 
@@ -47,8 +48,13 @@ cd jellybyte
 ### Step 2: Build the Docker Containers
 In the root of the repository, where the docker-compose.yml file is located, run the following command to build the necessary Docker containers:
 ```bash
-docker-compose build
+# For Apple environments
+docker compose -f docker-compose-apple.yml up --build
+
+# For Nvidia environments
+docker compose -f docker-compose-nvidia.yml up --build
 ```
+
 
 ### Step 3: Start the Docker Containers
 Once the containers are built, you can bring up the entire setup using the following command:
