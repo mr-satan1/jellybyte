@@ -1,4 +1,3 @@
-duckdb
 ollama
 pyjarm
 requests
