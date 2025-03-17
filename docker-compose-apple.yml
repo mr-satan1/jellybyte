@@ -1,0 +1,39 @@
+services:
+  jupyter:
+    image: jupyter/datascience-notebook:latest
+    container_name: jupyter
+    ports:
+      - 8888:8888
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+      JUPYTER_TOKEN: "jellybyte"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    networks:
+      - ollama_network
+    command: >
+      bash -c "pip install -r /home/jovyan/work/requirements.txt && start-notebook.sh"
+
+  open-webui:
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434 # Change to host.docker.internal
+      - WEBUI_SECRET_KEY=jellybyte
+    container_name: open-webui
+    restart: always
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - 3000:8080
+    extra_hosts:
+      - host.docker.internal:host-gateway # This allows containers to reach the host machine
+    networks:
+      - ollama_network
+
+networks:
+  ollama_network:
+    driver: bridge
+
+volumes:
+  open-webui:
+    name: open-webui
