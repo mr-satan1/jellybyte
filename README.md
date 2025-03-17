@@ -60,7 +60,7 @@ docker compose -f docker-compose-nvidia.yml up --build
 Once the containers are built, you can bring up the entire setup using the following command:
 
 ```bash
-docker-compose up
+docker compose up -f ${your_env_of_choice}.yml 
 ```
 
 ### Step 4: Login to Open-WebUI and Select a Model
